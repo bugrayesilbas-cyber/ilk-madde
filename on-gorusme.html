@@ -4,7 +4,7 @@ function buildRequest(){
  const val=id=>document.getElementById(id).value.trim();
  const n=val('volume');
  if(n && (!/^\\d+$/.test(n)||!Number.isSafeInteger(Number(n)))){feedback.textContent='Üretim adedini geçerli bir tam sayı olarak girin.';return null}
- const subject='İLK MADDE | CNC Pilot Analiz Ön Görüşme Talebi [WEB]';
+ const rawSource=new URLSearchParams(location.search).get('kaynak')||'dogrudan';\n const source=/^[a-z0-9-]{1,32}$/i.test(rawSource)?rawSource:'diger';\n const subject='İLK MADDE | CNC Pilot Analiz Ön Görüşme Talebi ['+source+']';
  const body=['Merhaba İLK MADDE,','','CNC pilot analiz hizmetiniz hakkında ön görüşme talep ediyorum.','','Firma / iletişim: '+(val('name')||'Belirtilmedi'),'Üretim tipi: '+val('type'),'Aylık üretim: '+(n||'Belirtilmedi'),'Öncelikli konu: '+val('issue'),'Açıklama: '+(val('note')||'Belirtilmedi'),'','Bu talep yalnızca e-posta gönderdiğimde size ulaşacaktır.'].join('\\n');
  return {subject,body};
 }
