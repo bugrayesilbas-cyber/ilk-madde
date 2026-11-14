@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://bugrayesilbas-cyber.github.io/ilk-madde/sitemap.xml
