@@ -3,9 +3,11 @@ const form=document.getElementById('request'), feedback=document.getElementById(
 function buildRequest(){
  const val=id=>document.getElementById(id).value.trim();
  const n=val('volume');
- if(n && (!/^\\d+$/.test(n)||!Number.isSafeInteger(Number(n)))){feedback.textContent='Üretim adedini geçerli bir tam sayı olarak girin.';return null}
- const rawSource=new URLSearchParams(location.search).get('kaynak')||'dogrudan';\n const source=/^[a-z0-9-]{1,32}$/i.test(rawSource)?rawSource:'diger';\n const subject='İLK MADDE | CNC Pilot Analiz Ön Görüşme Talebi ['+source+']';
- const body=['Merhaba İLK MADDE,','','CNC pilot analiz hizmetiniz hakkında ön görüşme talep ediyorum.','','Firma / iletişim: '+(val('name')||'Belirtilmedi'),'Üretim tipi: '+val('type'),'Aylık üretim: '+(n||'Belirtilmedi'),'Öncelikli konu: '+val('issue'),'Açıklama: '+(val('note')||'Belirtilmedi'),'','Bu talep yalnızca e-posta gönderdiğimde size ulaşacaktır.'].join('\\n');
+ if(n && (!/^\d+$/.test(n)||!Number.isSafeInteger(Number(n)))){feedback.textContent='Üretim adedini geçerli bir tam sayı olarak girin.';return null}
+ const rawSource=new URLSearchParams(location.search).get('kaynak')||'dogrudan';
+ const source=/^[a-z0-9-]{1,32}$/i.test(rawSource)?rawSource:'diger';
+ const subject='İLK MADDE | CNC Pilot Analiz Ön Görüşme Talebi ['+source+']';
+ const body=['Merhaba İLK MADDE,','','CNC pilot analiz hizmetiniz hakkında ön görüşme talep ediyorum.','','Firma / iletişim: '+(val('name')||'Belirtilmedi'),'Üretim tipi: '+val('type'),'Aylık üretim: '+(n||'Belirtilmedi'),'Öncelikli konu: '+val('issue'),'Açıklama: '+(val('note')||'Belirtilmedi'),'','Bu talep yalnızca e-posta gönderdiğimde size ulaşacaktır.'].join('\n');
  return {subject,body};
 }
 form.addEventListener('submit',e=>{
@@ -15,7 +17,7 @@ form.addEventListener('submit',e=>{
 });
 document.getElementById('copy').addEventListener('click',async()=>{
  const request=buildRequest();if(!request)return;
- const text=request.subject+'\\n\\n'+request.body;
+ const text=request.subject+'\n\n'+request.body;
  try{
   if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(text)}
   else{const area=document.createElement('textarea');area.value=text;area.style.position='fixed';area.style.opacity='0';document.body.appendChild(area);area.select();const ok=document.execCommand('copy');area.remove();if(!ok)throw new Error('copy unavailable')}
